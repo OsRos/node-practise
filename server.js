@@ -1,8 +1,13 @@
-const http = require('http');
-const host = 'localhost';
-const port = 3000;
+import http from "http";
+import dotenv from "dotenv";
 
-const server = http.createServer((req, res) => {
+dotenv.config();
+const host = process.env.HOST||'localhost';
+const port = process.env.PORT||'4000';
+
+http
+.createServer()
+.on('request',(req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-type', 'text/plain')
 
@@ -34,10 +39,11 @@ const server = http.createServer((req, res) => {
             res.end('Hello World');
     }
 })
-
-server.listen(port, host, () => {
-    console.log('Server running');
+.listen(port, host, () => {
+    console.log(`Server running on host: ${host} port : ${port}`);
 })
+
+
 
 function calculateResponseTimeInMs(startTime) {
     return BigInt(process.hrtime.bigint() - startTime) / BigInt(1e6);
